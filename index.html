@@ -12,12 +12,20 @@
       
       <script language = "JavaScript">
          $(document).ready(function() {
-var text = '{"title":{"text":"Gráfico de Doações"},"subtitle":{"text":"Clan: K.F.G.M"},"xAxis":{"categories":[20,21]},"yAxis":{"title":{"text":"Doações"}},"series":[{"name":"Tipsicoroyale","data":[1284,375]},{"name":"Vitão","data":[1154,364]},{"name":"GENERAL NATHAN","data":[400,43]},{"name":"Ubira","data":[801,379]},{"name":"John Piratel","data":[165]},{"name":"DenisGAMER","data":[106,82]},{"name":"Vilão BR","data":[150,73]},{"name":"Caio Eduardo","data":[149]},{"name":"João Oliveira","data":[170,438]},{"name":"tiagoejf","data":[8,0]},{"name":"filipe","data":[0]},{"name":"Jujuba","data":[1025,260]},{"name":"?dhiego?","data":[80,46]},{"name":"zepequeno","data":[0,0]},{"name":"NEYLIELTON XD","data":[462,262]},{"name":"wisk25","data":[24,84]},{"name":"EuSouUmBobo","data":[163,105]},{"name":"Anonymus","data":[104]},{"name":"Te matei","data":[0,0]},{"name":"Kamikaze","data":[0,0]},{"name":"ph","data":[183,102]},{"name":"Cassião","data":[799,439]},{"name":"fukushima","data":[674,314]},{"name":"RUSSO","data":[0,0]},{"name":"Nane","data":[336,137]},{"name":"TioSama","data":[343,174]},{"name":"Daniel guitar","data":[0,0]},{"name":"Lendário!","data":[154]},{"name":"xXEyEXx","data":[0,0]},{"name":"Deadpool","data":[0,0]},{"name":"ViTuRaNu","data":[198,152]},{"name":"gelli-clash","data":[217,138]},{"name":"arthur","data":[178,62]},{"name":"spartacus","data":[341,148]},{"name":"ALANREIS","data":[751,268]},{"name":"tartaruga ninja","data":[0,0]},{"name":"gui super","data":[180,49]},{"name":"RHUANGAMES","data":[0,0]},{"name":"Hawk eSports","data":[0,0]},{"name":"carlio","data":[0,0]},{"name":"nova 1 rafa","data":[84,38]},{"name":"IMORTAL","data":[76,24]},{"name":"Lord Archreis","data":[0,0]},{"name":"IKADUATCPV","data":[153,21]},{"name":"rodrigo","data":[582,317]},{"name":"Srta Mandii","data":[16,0]},{"name":"Rampaage2020","data":[0,0]}]}';
+var text = '{"title":"K.F.G.M","xAxis":{"categories":[20,21]},"yAxis":{"title":"Doações"},"series":[{"name":"Tipsicoroyale","data":[1284,375]},{"name":"Vitão","data":[1154,364]},{"name":"GENERAL NATHAN","data":[400,43]},{"name":"Ubira","data":[801,379]},{"name":"John Piratel","data":[165]},{"name":"DenisGAMER","data":[106,82]},{"name":"Vilão BR","data":[150,73]},{"name":"Caio Eduardo","data":[149]},{"name":"João Oliveira","data":[170,438]},{"name":"tiagoejf","data":[8,0]},{"name":"filipe","data":[0]},{"name":"Jujuba","data":[1025,260]},{"name":"?dhiego?","data":[80,46]},{"name":"zepequeno","data":[0,0]},{"name":"NEYLIELTON XD","data":[462,262]},{"name":"wisk25","data":[24,84]},{"name":"EuSouUmBobo","data":[163,105]},{"name":"Anonymus","data":[104]},{"name":"Te matei","data":[0,0]},{"name":"Kamikaze","data":[0,0]},{"name":"ph","data":[183,102]},{"name":"Cassião","data":[799,439]},{"name":"fukushima","data":[674,314]},{"name":"RUSSO","data":[0,0]},{"name":"Nane","data":[336,137]},{"name":"TioSama","data":[343,174]},{"name":"Daniel guitar","data":[0,0]},{"name":"Lendário!","data":[154]},{"name":"xXEyEXx","data":[0,0]},{"name":"Deadpool","data":[0,0]},{"name":"ViTuRaNu","data":[198,152]},{"name":"gelli-clash","data":[217,138]},{"name":"arthur","data":[178,62]},{"name":"spartacus","data":[341,148]},{"name":"ALANREIS","data":[751,268]},{"name":"tartaruga ninja","data":[0,0]},{"name":"gui super","data":[180,49]},{"name":"RHUANGAMES","data":[0,0]},{"name":"Hawk eSports","data":[0,0]},{"name":"carlio","data":[0,0]},{"name":"nova 1 rafa","data":[84,38]},{"name":"IMORTAL","data":[76,24]},{"name":"Lord Archreis","data":[0,0]},{"name":"IKADUATCPV","data":[153,21]},{"name":"rodrigo","data":[582,317]},{"name":"Srta Mandii","data":[16,0]},{"name":"Rampaage2020","data":[0,0]}]}';
 		var json = JSON.parse(text);
 		var chart = {
                type: 'spline'
             };
-              
+              var subtitle = {
+               text: 'Clan: '+json.title
+            };
+		var yAxis = {title: {
+               text: 'Doações'
+            }};
+		var title = {
+               text: 'Gráfico de '+yAxis.title.text
+            };
 
             var tooltip = {
                valueSuffix: ''
@@ -39,7 +47,9 @@ var text = '{"title":{"text":"Gráfico de Doações"},"subtitle":{"text":"Clan: K.F
 
             
             json.chart = chart;
-           
+            json.title = title;
+	    json.subtitle = subtitle;
+	    json.yAxis = yAxis;
             json.tooltip = tooltip;
             json.legend = legend;
             json.plotOptions = plotOptions;
