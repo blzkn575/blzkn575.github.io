@@ -22,7 +22,7 @@
       <script language = "JavaScript">
          $(document).ready(function() {
 		 
-var text = '{"title":"K.F.G.M","xAxis":{"categories":[20,21]},"yAxis":{"title":"Doações"},"series":[{"name":"Tipsicoroyale","data":[1284,375]},{"name":"Vitão","data":[1154,364]},{"name":"GENERAL NATHAN","data":[400,43]},{"name":"Ubira","data":[801,379]},{"name":"John Piratel","data":[165]},{"name":"DenisGAMER","data":[106,82]},{"name":"Vilão BR","data":[150,73]},{"name":"Caio Eduardo","data":[149]},{"name":"João Oliveira","data":[170,438]},{"name":"tiagoejf","data":[8,0]},{"name":"filipe","data":[0]},{"name":"Jujuba","data":[1025,260]},{"name":"♣dhiego♣","data":[80,46]},{"name":"zepequeno","data":[0,0]},{"name":"NEYLIELTON XD","data":[462,262]},{"name":"wisk25","data":[24,84]},{"name":"EuSouUmBobo","data":[163,105]},{"name":"Anonymus","data":[104]},{"name":"Te matei","data":[0,0]},{"name":"Kamikaze","data":[0,0]},{"name":"ph","data":[183,102]},{"name":"Cassião","data":[799,439]},{"name":"fukushima","data":[674,314]},{"name":"RUSSO","data":[0,0]},{"name":"Nane","data":[336,137]},{"name":"TioSama","data":[343,174]},{"name":"Daniel guitar","data":[0,0]},{"name":"Lendário!","data":[154]},{"name":"xXEyEXx","data":[0,0]},{"name":"Deadpool","data":[0,0]},{"name":"ViTuRaNu","data":[198,152]},{"name":"gelli-clash","data":[217,138]},{"name":"arthur","data":[178,62]},{"name":"spartacus","data":[341,148]},{"name":"ALANREIS","data":[751,268]},{"name":"tartaruga ninja","data":[0,0]},{"name":"gui super","data":[180,49]},{"name":"RHUANGAMES","data":[0,0]},{"name":"Hawk eSports","data":[0,0]},{"name":"carlio","data":[0,0]},{"name":"nova 1 rafa","data":[84,38]},{"name":"IMORTAL","data":[76,24]},{"name":"Lord Archreis","data":[0,0]},{"name":"IKADUATCPV","data":[153,21]},{"name":"rodrigo","data":[582,317]},{"name":"Srta Mandii","data":[16,0]},{"name":"Rampaage2020","data":[0,0]}]}';
+var text = '{"title":"K.F.G.M","xAxis":{"categories":[20,21]},"yAxis":{"title":"Doações"},"series":[{"data":[1284,533],"name":"Tipsicoroyale"},{"data":[1154,519],"name":"Vitão"},{"data":[400,93],"name":"GENERAL NATHAN"},{"data":[801,554],"name":"Ubira"},{"data":[165,null],"name":"John Piratel"},{"data":[106,142],"name":"DenisGAMER"},{"data":[150,83],"name":"Vilão BR"},{"data":[149,null],"name":"Caio Eduardo"},{"data":[170,477],"name":"João Oliveira"},{"data":[8,0],"name":"tiagoejf"},{"data":[0,null],"name":"filipe"},{"data":[1025,447],"name":"Jujuba"},{"data":[80,106],"name":"♣dhiego♣"},{"data":[0,0],"name":"zepequeno"},{"data":[462,352],"name":"NEYLIELTON XD"},{"data":[24,159],"name":"wisk25"},{"data":[163,105],"name":"EuSouUmBobo"},{"data":[104,null],"name":"Anonymus"},{"data":[0,98],"name":"Te matei"},{"data":[0,0],"name":"Kamikaze"},{"data":[183,146],"name":"ph"},{"data":[799,581],"name":"Cassião"},{"data":[674,438],"name":"fukushima"},{"data":[0,0],"name":"RUSSO"},{"data":[336,241],"name":"Nane"},{"data":[343,271],"name":"TioSama"},{"data":[0,0],"name":"Daniel guitar"},{"data":[154,null],"name":"Lendário!"},{"data":[0,0],"name":"xXEyEXx"},{"data":[0,0],"name":"Deadpool"},{"data":[198,190],"name":"ViTuRaNu"},{"data":[217,166],"name":"gelli-clash"},{"data":[178,96],"name":"arthur"},{"data":[341,272],"name":"spartacus"},{"data":[751,490],"name":"ALANREIS"},{"data":[0,0],"name":"tartaruga ninja"},{"data":[180,49],"name":"gui super"},{"data":[0,0],"name":"RHUANGAMES"},{"data":[0,0],"name":"Hawk eSports"},{"data":[0,0],"name":"carlio"},{"data":[84,60],"name":"nova 1 rafa"},{"data":[76,48],"name":"IMORTAL"},{"data":[0,0],"name":"Lord Archreis"},{"data":[153,21],"name":"IKADUATCPV"},{"data":[582,445],"name":"rodrigo"},{"data":[16,0],"name":"Srta Mandii"},{"data":[0,0],"name":"Rampaage2020"},{"data":[null,138],"name":"Arthur o Grande"}]}';
 		var json = JSON.parse(text);
 		var chart = {
                type: 'spline'
@@ -64,20 +64,32 @@ var text = '{"title":"K.F.G.M","xAxis":{"categories":[20,21]},"yAxis":{"title":"
             json.legend = legend;
             json.plotOptions = plotOptions;
           var jsonweek = JSON.parse(JSON.stringify(json));
-		
+		var jsonmain = JSON.parse(JSON.stringify(json));
 		json.xAxis.categories.forEach(function(item){
 			$('#weekfilter').append('<option value="'+item+'">Semana '+item+'</option>');
 		});
-		
+		function plotMainChart(dataplot,t) {
+			if(t=='main'){
+			dataplot.series.forEach(function(serie,index){
+				if(serie.data[serie.data.length-1] == null){
+				dataplot.series.splice(index,1);
+			}
+			});
+			Highcharts.chart('container',dataplot);
+			} else {
+			Highcharts.chart('container',dataplot);
+			}
+			
+		}
 			//$('#container').highcharts(json);
-			Highcharts.chart('container',json);
+			plotMainChart(jsonmain,'main');
 			var valweek;
 			var firstweek = 20;
 		$("#weekfilter").change(function() {
 		valweek = $(this).val();
 			if (valweek == "todas") {
 				//$('#container').highcharts(json);
-				Highcharts.chart('container',json);
+				plotMainChart(jsonmain,'main');
 			} else {
 				var seriepie = [];
 				var serieweek = {};
@@ -120,7 +132,8 @@ var text = '{"title":"K.F.G.M","xAxis":{"categories":[20,21]},"yAxis":{"title":"
 				//var a = JSON.stringify(jsonweek);
 				//$("p").text(a);
 				//$('#container').highcharts(jsonweek);
-				Highcharts.chart('container',jsonweek);
+				
+				plotMainChart(jsonweek,'week');
 			}
 		});
 		$("#hidefilter").change(function() {
