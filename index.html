@@ -1,17 +1,27 @@
 ﻿<html>
    <head>
       <title>Highcharts Tutorial</title>
-      <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
-      </script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
       <script src = "https://code.highcharts.com/highcharts.js"></script>
+	  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+	  <script src="https://code.highcharts.com/modules/export-data.js"></script>
 	
    </head>
    
    <body>
+<select id="hidefilter">
+  <option value="show">Show All</option>
+  <option value="hide">Hide All</option>
+</select>
+<select id="weekfilter">
+<option value="todas">Todas as semanas</option>
+</select>
       <div id = "container" style = "width: 1286px; height: 720px; margin: 0 auto"></div>
+	  <p></p>
       
       <script language = "JavaScript">
          $(document).ready(function() {
+		 
 var text = '{"title":"K.F.G.M","xAxis":{"categories":[20,21]},"yAxis":{"title":"Doações"},"series":[{"name":"Tipsicoroyale","data":[1284,375]},{"name":"Vitão","data":[1154,364]},{"name":"GENERAL NATHAN","data":[400,43]},{"name":"Ubira","data":[801,379]},{"name":"John Piratel","data":[165]},{"name":"DenisGAMER","data":[106,82]},{"name":"Vilão BR","data":[150,73]},{"name":"Caio Eduardo","data":[149]},{"name":"João Oliveira","data":[170,438]},{"name":"tiagoejf","data":[8,0]},{"name":"filipe","data":[0]},{"name":"Jujuba","data":[1025,260]},{"name":"♣dhiego♣","data":[80,46]},{"name":"zepequeno","data":[0,0]},{"name":"NEYLIELTON XD","data":[462,262]},{"name":"wisk25","data":[24,84]},{"name":"EuSouUmBobo","data":[163,105]},{"name":"Anonymus","data":[104]},{"name":"Te matei","data":[0,0]},{"name":"Kamikaze","data":[0,0]},{"name":"ph","data":[183,102]},{"name":"Cassião","data":[799,439]},{"name":"fukushima","data":[674,314]},{"name":"RUSSO","data":[0,0]},{"name":"Nane","data":[336,137]},{"name":"TioSama","data":[343,174]},{"name":"Daniel guitar","data":[0,0]},{"name":"Lendário!","data":[154]},{"name":"xXEyEXx","data":[0,0]},{"name":"Deadpool","data":[0,0]},{"name":"ViTuRaNu","data":[198,152]},{"name":"gelli-clash","data":[217,138]},{"name":"arthur","data":[178,62]},{"name":"spartacus","data":[341,148]},{"name":"ALANREIS","data":[751,268]},{"name":"tartaruga ninja","data":[0,0]},{"name":"gui super","data":[180,49]},{"name":"RHUANGAMES","data":[0,0]},{"name":"Hawk eSports","data":[0,0]},{"name":"carlio","data":[0,0]},{"name":"nova 1 rafa","data":[84,38]},{"name":"IMORTAL","data":[76,24]},{"name":"Lord Archreis","data":[0,0]},{"name":"IKADUATCPV","data":[153,21]},{"name":"rodrigo","data":[582,317]},{"name":"Srta Mandii","data":[16,0]},{"name":"Rampaage2020","data":[0,0]}]}';
 		var json = JSON.parse(text);
 		var chart = {
@@ -53,9 +63,101 @@ var text = '{"title":"K.F.G.M","xAxis":{"categories":[20,21]},"yAxis":{"title":"
             json.tooltip = tooltip;
             json.legend = legend;
             json.plotOptions = plotOptions;
-          
+          var jsonweek = JSON.parse(JSON.stringify(json));
+		
+		json.xAxis.categories.forEach(function(item){
+			$('#weekfilter').append('<option value="'+item+'">Semana '+item+'</option>');
+		});
+		
+			//$('#container').highcharts(json);
+			Highcharts.chart('container',json);
+			var valweek;
+			var firstweek = 20;
+		$("#weekfilter").change(function() {
+		valweek = $(this).val();
+			if (valweek == "todas") {
+				//$('#container').highcharts(json);
+				Highcharts.chart('container',json);
+			} else {
+				var seriepie = [];
+				var serieweek = {};
+				var data = [];
 
-            $('#container').highcharts(json);
+				jsonweek.chart.type = 'pie';
+				jsonweek.subtitle.text = json.subtitle.text+" Semana: "+valweek;
+				json.series.forEach(function(serie,index){
+					data.push(serie);
+					delete data.data;
+					data[index].name = json.series[index].name;
+					data[index].y = json.series[index].data[valweek-firstweek];
+					
+				});
+				data.forEach(function(serie,index){
+					if(serie.y == undefined){
+					data.splice(index,1);
+					}
+				});
+				serieweek.name = 'Semana '+valweek;
+				serieweek.colorByPoint = true;
+				serieweek.data = data;
+				seriepie.push(serieweek);
+				jsonweek.series = seriepie;
+				jsonweek.tooltip.pointFormat = '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>';
+				jsonweek.plotOptions = {
+					pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						dataLabels: {
+							enabled: true,
+							format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f} %)',
+							style: {
+								color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+							}
+						},
+						showInLegend: true
+					}
+				}
+				//var a = JSON.stringify(jsonweek);
+				//$("p").text(a);
+				//$('#container').highcharts(jsonweek);
+				Highcharts.chart('container',jsonweek);
+			}
+		});
+		$("#hidefilter").change(function() {
+		var graph = $('#container').highcharts();
+        
+		if($("#weekfilter").val() == "todas"){
+		var series = graph.series[0];
+			if ($(this).val() == "hide") {
+            $(graph.series).each(function(){
+                //this.hide();
+                this.setVisible(false, false);
+            });
+            graph.redraw();
+        } else if($(this).val() == "show"){
+            $(graph.series).each(function(){
+                //this.show();
+                this.setVisible(true, false);
+            });
+            graph.redraw();
+        }
+		} else {
+		var series = graph.series[0].data;
+        if ($(this).val() == "hide") {
+            $(graph.series[0].data).each(function(){
+                //this.hide();
+                this.setVisible(false, false);
+            });
+            graph.redraw();
+        } else if($(this).val() == "show"){
+            $(graph.series[0].data).each(function(){
+                //this.show();
+                this.setVisible(true, false);
+            });
+            graph.redraw();
+        }
+		}
+    });
          });
       </script>
       
