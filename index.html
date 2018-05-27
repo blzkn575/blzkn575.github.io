@@ -40,7 +40,26 @@
 		var json = {};
 		var jsonweek = {};
 		var jsonmain = {};
-		$.ajax({url: "https://doc-14-18-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/fe7jqr6u3iuacgkjhtjmljrt59dal7ro/1527350400000/08429605326402585515/*/197Ur6frl4vwV32i6-ivswOS94llBVRyJ?e=download", success: function(result){
+		var redirect = "https://doc-14-18-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/rioc596lf156ghpjiahj8a725rheuobe/1527429600000/08429605326402585515/*/197Ur6frl4vwV32i6-ivswOS94llBVRyJ?e=download";
+		//redirect = 'https://drive.google.com/uc?export=download&id=197Ur6frl4vwV32i6-ivswOS94llBVRyJ';
+		//$.ajax({url: "https://doc-14-18-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/fe7jqr6u3iuacgkjhtjmljrt59dal7ro/1527350400000/08429605326402585515/*/197Ur6frl4vwV32i6-ivswOS94llBVRyJ?e=download", dataType: 'json', jsonpCallback: 'callback', type: 'GET', success: function(result){
+		// redirect = result;
+		//}});
+		$.ajax({url: redirect, dataType: 'json', jsonpCallback: 'callback', type: 'GET', header:{}, success: function(result){
+/*var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://drive.google.com/uc?export=download&id=197Ur6frl4vwV32i6-ivswOS94llBVRyJ",
+  "method": "GET",
+ "headers": {
+    "access-control-allow-origin": "*",
+    "cache-control": "no-cache",
+	"postman-token": "8b50e914-5a50-7c41-1078-92653f1d3df1"
+  }
+}
+$.ajax(settings).done(function (result) {*/
+  
+
             json = JSON.parse(JSON.stringify(result));
 			var xAxistitle = {
 			text: 'Nº da semana de 2018'
@@ -115,9 +134,11 @@
 			var firstweek = 20;
 		$("#weekfilter").change(function() {
 		valweek = $(this).val();
+		jsonweek = JSON.parse(JSON.stringify(json));
 			if (valweek == "todas") {
 				//$('#container').highcharts(json);
 				plotChart(jsonmain,'main');
+				
 			} else {
 				var seriepie = [];
 				var serieweek = {};
@@ -125,17 +146,19 @@
 
 				jsonweek.chart.type = 'pie';
 				jsonweek.subtitle.text = json.subtitle.text+" Semana: "+valweek;
-				json.series.forEach(function(serie,index){
+				jsonweek.series.forEach(function(serie,index){
+					delete serie.data;
 					data.push(serie);
-					delete data.data;
 					data[index].name = json.series[index].name;
 					data[index].y = json.series[index].data[valweek-firstweek];
 					
 				});
 				data.forEach(function(serie,index){
-					if(serie.y == undefined){
+				
+					while((index < data.length) && (data[index].y == null)){
 					data.splice(index,1);
 					}
+				
 				});
 				serieweek.name = 'Semana '+valweek;
 				serieweek.colorByPoint = true;
@@ -162,7 +185,15 @@
 				//$('#container').highcharts(jsonweek);
 				
 				plotChart(jsonweek,'week');
+				
+				
 			}
+			//mudar valor e disparar evento
+			$('#hidefilter option[value=show]').prop('selected', 'selected').change();
+			
+			var tip = $('#hidefilter').val();
+				$('#hidefilter option[value=show]').attr('selected','selected');
+				tip = $('#hidefilter').val();
 		});
 		$("#hidefilter").change(function() {
 		var graph = $('#container').highcharts();
