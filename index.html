@@ -1,282 +1,226 @@
 ﻿<html>
-   <head>
-      <title>K.F.G.M</title>
-	  
-<link rel="icon" href="https://blzkn575.github.io/favicon.ico?v=2"/>
-      <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-      <script src = "https://code.highcharts.com/highcharts.js"></script>
-	  <script src="https://code.highcharts.com/modules/exporting.js"></script>
-	  <script src="https://code.highcharts.com/modules/export-data.js"></script>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
-	  <script>
-		
-	  </script>
-   </head>
+	<head>
+		<title>K.F.G.M</title>
+		<link rel="icon" href="https://blzkn575.github.io/favicon.ico?v=2"/>
+		<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src = "https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/modules/export-data.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
+	</head>
    
-   <body>
-   <div align="center">
-   <img src="Fugi_04.png" alt="K.F.G.M Ícone">
-   <h1>K.F.G.M<br> </h1>
-   </div>
-   <div align="center">
-<select id="hidefilter">
-  <option value="show">Mostrar Todos</option>
-  <option value="hide">Esconder Todos</option>
-</select>
-<select id="weekfilter">
-<option value="todas">Todas as semanas</option>
-</select>
-<select id="datafilter">
-  <option value="donation">Doações</option>
-  <option value="request">Pedidos</option>
-  <option value="delta">Delta</option>
-</select>
-</div>
-      <div id = "container" style = "width: 1286px; height: 720px; margin: 0 auto"></div>
-	  <p></p>
+	<body>
+		<div align="center">
+			<img src="Fugi_04.png" alt="K.F.G.M Ícone">
+			<h1>K.F.G.M<br> </h1>
+		</div>
+		<div align="center">
+			<select id="hidefilter">
+				<option value="show">Mostrar Todos</option>
+				<option value="hide">Esconder Todos</option>
+			</select>
+			<select id="weekfilter">
+				<option value="todas">Todas as semanas</option>
+			</select>
+			<select id="datafilter">
+				<option value="donation">Doações</option>
+				<option value="request">Pedidos</option>
+				<option value="delta">Delta</option>
+			</select>
+		</div>
+		<div id = "container" style = "width: 1286px; height: 720px; margin: 0 auto"></div>
+		<p></p>
       
-      <script language = "JavaScript">
-         $(document).ready(function() {
-		 
-		 
-//var text = '{"title":"K.F.G.M","xAxis":{"categories":[20,21]},"yAxis":{"title":"Doações"},"series":[{"data":[1284,533],"name":"Tipsicoroyale"},{"data":[1154,519],"name":"Vitão"},{"data":[400,93],"name":"GENERAL NATHAN"},{"data":[801,554],"name":"Ubira"},{"data":[165,null],"name":"John Piratel"},{"data":[106,142],"name":"DenisGAMER"},{"data":[150,83],"name":"Vilão BR"},{"data":[149,null],"name":"Caio Eduardo"},{"data":[170,477],"name":"João Oliveira"},{"data":[8,0],"name":"tiagoejf"},{"data":[0,null],"name":"filipe"},{"data":[1025,447],"name":"Jujuba"},{"data":[80,106],"name":"♣dhiego♣"},{"data":[0,0],"name":"zepequeno"},{"data":[462,352],"name":"NEYLIELTON XD"},{"data":[24,159],"name":"wisk25"},{"data":[163,105],"name":"EuSouUmBobo"},{"data":[104,null],"name":"Anonymus"},{"data":[0,98],"name":"Te matei"},{"data":[0,0],"name":"Kamikaze"},{"data":[183,146],"name":"ph"},{"data":[799,581],"name":"Cassião"},{"data":[674,438],"name":"fukushima"},{"data":[0,0],"name":"RUSSO"},{"data":[336,241],"name":"Nane"},{"data":[343,271],"name":"TioSama"},{"data":[0,0],"name":"Daniel guitar"},{"data":[154,null],"name":"Lendário!"},{"data":[0,0],"name":"xXEyEXx"},{"data":[0,0],"name":"Deadpool"},{"data":[198,190],"name":"ViTuRaNu"},{"data":[217,166],"name":"gelli-clash"},{"data":[178,96],"name":"arthur"},{"data":[341,272],"name":"spartacus"},{"data":[751,490],"name":"ALANREIS"},{"data":[0,0],"name":"tartaruga ninja"},{"data":[180,49],"name":"gui super"},{"data":[0,0],"name":"RHUANGAMES"},{"data":[0,0],"name":"Hawk eSports"},{"data":[0,0],"name":"carlio"},{"data":[84,60],"name":"nova 1 rafa"},{"data":[76,48],"name":"IMORTAL"},{"data":[0,0],"name":"Lord Archreis"},{"data":[153,21],"name":"IKADUATCPV"},{"data":[582,445],"name":"rodrigo"},{"data":[16,0],"name":"Srta Mandii"},{"data":[0,0],"name":"Rampaage2020"},{"data":[null,138],"name":"Arthur o Grande"}]}';
-
-//		var json = JSON.parse(text);
-		var json = {};
-		var jsonweek = {};
-		var jsonmain = {};
-		var redirect = "https://doc-14-18-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/q5o2kupgkf3o7ib21su9f42v7ctpdg8u/1527436800000/08429605326402585515/*/197Ur6frl4vwV32i6-ivswOS94llBVRyJ?e=download";
-		redirect = 'https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=197Ur6frl4vwV32i6-ivswOS94llBVRyJ';
-		//$.ajax({url: "https://doc-14-18-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/fe7jqr6u3iuacgkjhtjmljrt59dal7ro/1527350400000/08429605326402585515/*/197Ur6frl4vwV32i6-ivswOS94llBVRyJ?e=download", dataType: 'json', jsonpCallback: 'callback', type: 'GET', success: function(result){
-		// redirect = result;
-		//}});
-		$.ajax({url: redirect, dataType: 'json', jsonpCallback: 'callback', type: 'GET', header:{}, success: function(result){
-/*var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "https://drive.google.com/uc?export=download&id=197Ur6frl4vwV32i6-ivswOS94llBVRyJ",
-  "method": "GET",
- "headers": {
-    "access-control-allow-origin": "*",
-    "cache-control": "no-cache",
-	"postman-token": "8b50e914-5a50-7c41-1078-92653f1d3df1"
-  }
-}
-$.ajax(settings).done(function (result) {*/
-  
-
-            json = JSON.parse(JSON.stringify(result));
-			var xAxistitle = {
+<script language = "JavaScript">
+$(document).ready(function() { //Executa a função ao disparar o evento de Documento Pronto
+	var valweek;
+	var firstweek = 20;
+	var json = {};
+	var jsonweek = {};
+	var jsonmain = {};
+	var redirect = 'https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=197Ur6frl4vwV32i6-ivswOS94llBVRyJ';
+	//Faz requisição de GET arquivo json na URL redirect
+	$.ajax({url: redirect, dataType: 'json', jsonpCallback: 'callback', type: 'GET', header:{}, success: function(result){
+		//Em caso de sucesso, executa essa função
+        json = JSON.parse(JSON.stringify(result)); //Técnica para clonar objeto
+		var xAxistitle = {
 			text: 'Nº da semana de 2018'
-			
-			};
-        
+		};
 		var chart = {
-               type: 'spline'
-            };
-              var subtitle = {
-               text: 'Clan: '+json.title
-            };
+            type: 'spline'
+		};
+        var subtitle = {
+            text: 'Clan: '+json.title
+        };
 		var yAxis = {title: {
-               text: 'Doações'
-            }};
+            text: 'Doações'
+        }};
 		var title = {
-               text: 'Gráfico de '+yAxis.title.text
-            };
-
-            var tooltip = {
-               valueSuffix: ''
-            };
-            var legend = {
-               layout: 'vertical',
-               align: 'right',
-               verticalAlign: 'middle',
-               borderWidth: 0
-            };
+            text: 'Gráfico de '+yAxis.title.text
+        };
+        var tooltip = {
+            valueSuffix: ''
+        };
+        var legend = {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        };
 		var plotOptions = {
-               spline: {
-                  dataLabels: {
-                     enabled: false
-                  },   
-                  enableMouseTracking: true
-               }
-            };
-
-            
-            json.chart = chart;
-            json.title = title;
+            spline: {
+				dataLabels: {
+					enabled: false
+                },   
+                enableMouseTracking: true
+            }
+        };
+        json.chart = chart;
+        json.title = title;
 	    json.subtitle = subtitle;
 	    json.yAxis = yAxis;
 		json.xAxis.title = xAxistitle;
-            json.tooltip = tooltip;
-            json.legend = legend;
-            json.plotOptions = plotOptions;
-          
-		
+        json.tooltip = tooltip;
+        json.legend = legend;
+        json.plotOptions = plotOptions;
 		json.xAxis.categories.forEach(function(item){
+			//Acrescenta opção no filtro de semana para cada semana
 			$('#weekfilter').append('<option value="'+item+'">Semana '+item+'</option>');
 		});
+		$("#datafilter").trigger('change'); //Dispara o evento de CHANGE no filtro de dados
+	}});//fim do ajax
 		
-		$("#datafilter").trigger('change');
-		//plotChart(jsonmain,'main');
-		}});//fim do ajax
-		function plotChart(dataplot,t) {
-			
-			if(t=='main'){
+	function plotChart(dataplot,t) { //Função de plotar gráfico	
+		if(t=='main'){ //Se for todas as semanas
 			dataplot.series.forEach(function(serie,index){
-				if(serie.data[serie.data.length-1] == null){
-				dataplot.series.splice(index,1);
-			}
-			});
-			 
-			
-			
+				if(serie.data[serie.data.length-1] == null){ //Verifica em cada série se o jogador está no clã (buscando valor Nulo no último índice do vetor Data)
+					dataplot.series.splice(index,1);
+				}
+			});	
+		Highcharts.chart('container',dataplot);
+		} else { //Se for semana específica
 			Highcharts.chart('container',dataplot);
-			} else {
-			Highcharts.chart('container',dataplot);
-			}
-			
-		}
-			//$('#container').highcharts(json);
-			$("#datafilter").change(function() {
-			switch($(this).val()) {
+		}	
+	}
+	
+	$("#datafilter").change(function() { //Executar função quando evento CHANGE no filtro de dados ocorrer
+		switch($(this).val()) { //Switch no valor da SELEÇÂO no filtro de dados para formatar o dado ativo (data) como uma das opções (data 1,2,3)
 			case "donation":
-			json.yAxis.title.text = "Doações";
-            json.series.forEach(function(serie,index){
-				json.series[index].data = json.series[index].data1;
-			});
+				json.yAxis.title.text = "Doações";
+				json.series.forEach(function(serie,index){
+					json.series[index].data = json.series[index].data1;
+				});
 			break;
 			case "request":
-			json.yAxis.title.text = "Pedidos";
-            json.series.forEach(function(serie,index){
-				json.series[index].data = json.series[index].data2;
-			});
+				json.yAxis.title.text = "Pedidos";
+				json.series.forEach(function(serie,index){
+					json.series[index].data = json.series[index].data2;
+				});
 			break;
 			case "delta":
-			json.yAxis.title.text = "Doações - Pedidos";
-            json.series.forEach(function(serie,index){
-				json.series[index].data = json.series[index].data3;
-			});
+				json.yAxis.title.text = "Doações - Pedidos";
+				json.series.forEach(function(serie,index){
+					json.series[index].data = json.series[index].data3;
+				});
 			break;
-			}
-			$("#weekfilter").trigger('change');
-			});
-			var valweek;
-			var firstweek = 20;
-		$("#weekfilter").change(function() {
+		}
+		$("#weekfilter").trigger('change'); //Dispara evento CHANGE no filtro de semana
+	});
+	
+	$("#weekfilter").change(function() { //Executar função quando evento CHANGE no filtro de semana ocorrer
 		valweek = $(this).val();
-		
 		jsonmain = JSON.parse(JSON.stringify(json));
 		jsonweek = JSON.parse(JSON.stringify(json));
-			if (valweek == "todas") {
-				//$('#container').highcharts(json);
-				plotChart(jsonmain,'main');
-				
-			} else {
-				var seriepie = [];
-				var serieweek = {};
-				var data = [];
-
-				jsonweek.chart.type = 'pie';
-				jsonweek.subtitle.text = json.subtitle.text+" Semana: "+valweek;
-				jsonweek.series.forEach(function(serie,index){
-					delete serie.data;
-					data.push(serie);
-					data[index].name = json.series[index].name;
-					if(json.series[index].data[valweek-firstweek] < 0){
-					data[index].y = json.series[index].data[valweek-firstweek] * (-1);
-					data[index].positive = false;
-					} else {
+		if (valweek == "todas") { //Se for todas as semanas
+			plotChart(jsonmain,'main');
+		} else { //Se for semana específica
+			var seriepie = [];
+			var serieweek = {};
+			var data = [];
+			jsonweek.chart.type = 'pie';
+			jsonweek.subtitle.text = json.subtitle.text+" Semana: "+valweek;
+			jsonweek.series.forEach(function(serie,index){
+				delete serie.data;
+				data.push(serie);
+				data[index].name = json.series[index].name;
+				if(json.series[index].data[valweek-firstweek] < 0){ //Se o dado na série atual for negativo
+					data[index].y = json.series[index].data[valweek-firstweek] * (-1); //Torna ele positivo
+					data[index].positive = false; //Set flag para falso positivo
+				} else {
 					data[index].y = json.series[index].data[valweek-firstweek];
 					data[index].positive = true;
-					}
-				});
-				data.forEach(function(serie,index){
-				
-					while((index < data.length) && (data[index].y == null)){
-					data.splice(index,1);
-					}
-				
-				});
-				serieweek.name = 'Semana '+valweek;
-				serieweek.colorByPoint = true;
-				serieweek.data = data;
-				seriepie.push(serieweek);
-				jsonweek.series = seriepie;
-				jsonweek.tooltip.formatter = function() {
-					var val = this.point.positive ? this.y : this.y * (-1);
-					return this.point.name+': <b>'+val+' ('+this.percentage.toFixed(1)+'%)</b>';
-				};
-				jsonweek.plotOptions = {
-					pie: {
-						allowPointSelect: true,
-						cursor: 'pointer',
-						dataLabels: {
-							enabled: true,
-							formatter: function() {
-								var val = this.point.positive ? this.y : this.y * (-1);
-								return '<b>'+this.point.name+'</b>: '+val+' ('+this.percentage.toFixed(1)+'%)';
-								//return this.point.positive ? 'positivo' : 'negativo';
-							},
-							style: {
-								color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-							}
-						},
-						showInLegend: true
-					}
 				}
-				//var a = JSON.stringify(jsonweek);
-				//$("p").text(a);
-				//$('#container').highcharts(jsonweek);
-				
-				plotChart(jsonweek,'week');
-				
-				
+			});
+			data.forEach(function(serie,index){	
+				//Procura por valores Nulos e retira da array para não ser plotado
+				while((index < data.length) && (data[index].y == null)){
+					data.splice(index,1);
+				}
+			});
+			serieweek.name = 'Semana '+valweek;
+			serieweek.colorByPoint = true;
+			serieweek.data = data;
+			seriepie.push(serieweek);
+			jsonweek.series = seriepie;
+			jsonweek.tooltip.formatter = function() {
+				var val = this.point.positive ? this.y : this.y * (-1);
+				return this.point.name+': <b>'+val+' ('+this.percentage.toFixed(1)+'%)</b>';
+			};
+			jsonweek.plotOptions = {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						formatter: function() {
+							var val = this.point.positive ? this.y : this.y * (-1);
+							return '<b>'+this.point.name+'</b>: '+val+' ('+this.percentage.toFixed(1)+'%)';
+						},
+						style: {
+							color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+						}
+					},
+					showInLegend: true
+				}
 			}
-			//mudar valor e disparar evento
-			$('#hidefilter option[value=show]').prop('selected', 'selected').change();
-			
-			var tip = $('#hidefilter').val();
-				$('#hidefilter option[value=show]').attr('selected','selected');
-				tip = $('#hidefilter').val();
-		});
-		$("#hidefilter").change(function() {
-		var graph = $('#container').highcharts();
-        
+			plotChart(jsonweek,'week');	
+		}
+		//mudar valor e disparar evento
+		$('#hidefilter option[value=show]').prop('selected', 'selected').change();	
+	});
+	
+	$("#hidefilter").change(function() { //Executar função quando evento CHANGE no filtro de esconder ocorrer
+		var graph = $('#container').highcharts(); //Armazena o gráfico em uma variável 
 		if($("#weekfilter").val() == "todas"){
-		var series = graph.series[0];
+			var series = graph.series[0];
 			if ($(this).val() == "hide") {
-            $(graph.series).each(function(){
-                //this.hide();
-                this.setVisible(false, false);
-            });
-            graph.redraw();
-        } else if($(this).val() == "show"){
-            $(graph.series).each(function(){
-                //this.show();
-                this.setVisible(true, false);
-            });
-            graph.redraw();
-        }
+				$(graph.series).each(function(){
+					this.setVisible(false, false);
+				});
+				graph.redraw();
+			} else if($(this).val() == "show"){
+				$(graph.series).each(function(){
+					this.setVisible(true, false);
+				});
+				graph.redraw();
+			}
 		} else {
-		var series = graph.series[0].data;
-        if ($(this).val() == "hide") {
-            $(graph.series[0].data).each(function(){
-                //this.hide();
-                this.setVisible(false, false);
-            });
-            graph.redraw();
-        } else if($(this).val() == "show"){
-            $(graph.series[0].data).each(function(){
-                //this.show();
-                this.setVisible(true, false);
-            });
-            graph.redraw();
-        }
+			var series = graph.series[0].data;
+			if ($(this).val() == "hide") {
+				$(graph.series[0].data).each(function(){
+					this.setVisible(false, false);
+				});
+				graph.redraw();
+			} else if($(this).val() == "show"){
+				$(graph.series[0].data).each(function(){
+					this.setVisible(true, false);
+				});
+				graph.redraw();
+			}
 		}
     });
-         });
-      </script>
+});
+</script>
       
-   </body>
+	</body>
 </html>
