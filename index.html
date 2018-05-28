@@ -107,18 +107,21 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 		switch($(this).val()) { //Switch no valor da SELEÇÂO no filtro de dados para formatar o dado ativo (data) como uma das opções (data 1,2,3)
 			case "donation":
 				json.yAxis.title.text = "Doações";
+				json.title.text = 'Gráfico de '+json.yAxis.title.text;
 				json.series.forEach(function(serie,index){
 					json.series[index].data = json.series[index].data1;
 				});
 			break;
 			case "request":
 				json.yAxis.title.text = "Pedidos";
+				json.title.text = 'Gráfico de '+json.yAxis.title.text;
 				json.series.forEach(function(serie,index){
 					json.series[index].data = json.series[index].data2;
 				});
 			break;
 			case "delta":
 				json.yAxis.title.text = "Doações - Pedidos";
+				json.title.text = 'Gráfico de '+json.yAxis.title.text;
 				json.series.forEach(function(serie,index){
 					json.series[index].data = json.series[index].data3;
 				});
