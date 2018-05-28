@@ -180,8 +180,13 @@ $.ajax(settings).done(function (result) {*/
 					delete serie.data;
 					data.push(serie);
 					data[index].name = json.series[index].name;
+					if(json.series[index].data[valweek-firstweek] < 0){
+					data[index].y = json.series[index].data[valweek-firstweek] * (-1);
+					data[index].positive = false;
+					} else {
 					data[index].y = json.series[index].data[valweek-firstweek];
-					
+					data[index].positive = true;
+					}
 				});
 				data.forEach(function(serie,index){
 				
@@ -195,14 +200,21 @@ $.ajax(settings).done(function (result) {*/
 				serieweek.data = data;
 				seriepie.push(serieweek);
 				jsonweek.series = seriepie;
-				jsonweek.tooltip.pointFormat = '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>';
+				jsonweek.tooltip.formatter = function() {
+					var val = this.point.positive ? this.y : this.y * (-1);
+					return this.point.name+': <b>'+val+' ('+this.percentage.toFixed(1)+'%)</b>';
+				};
 				jsonweek.plotOptions = {
 					pie: {
 						allowPointSelect: true,
 						cursor: 'pointer',
 						dataLabels: {
 							enabled: true,
-							format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f} %)',
+							formatter: function() {
+								var val = this.point.positive ? this.y : this.y * (-1);
+								return '<b>'+this.point.name+'</b>: '+val+' ('+this.percentage.toFixed(1)+'%)';
+								//return this.point.positive ? 'positivo' : 'negativo';
+							},
 							style: {
 								color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
 							}
