@@ -18,6 +18,8 @@
 			<select id="hidefilter">
 				<option value="show">Mostrar Todos</option>
 				<option value="hide">Esconder Todos</option>
+				<option value="top10">Mostrar 10 Melhores</option>
+				<option value="bottom10">Mostrar 10 Piores</option>
 			</select>
 			<select id="weekfilter">
 				<option value="todas">Todas as semanas</option>
@@ -97,7 +99,7 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 					dataplot.series.splice(index,1);
 				}
 			});	
-		Highcharts.chart('container',dataplot);
+			Highcharts.chart('container',dataplot);
 		} else { //Se for semana específica
 			Highcharts.chart('container',dataplot);
 		}	
@@ -110,6 +112,7 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 				json.title.text = 'Gráfico de '+json.yAxis.title.text;
 				json.series.forEach(function(serie,index){
 					json.series[index].data = json.series[index].data1;
+					json.series[index].avg = json.series[index].avg1;
 				});
 			break;
 			case "request":
@@ -117,6 +120,7 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 				json.title.text = 'Gráfico de '+json.yAxis.title.text;
 				json.series.forEach(function(serie,index){
 					json.series[index].data = json.series[index].data2;
+					json.series[index].avg = json.series[index].avg2;
 				});
 			break;
 			case "delta":
@@ -124,6 +128,7 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 				json.title.text = 'Gráfico de '+json.yAxis.title.text;
 				json.series.forEach(function(serie,index){
 					json.series[index].data = json.series[index].data3;
+					json.series[index].avg = json.series[index].avg3;
 				});
 			break;
 		}
@@ -134,6 +139,8 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 		valweek = $(this).val();
 		jsonmain = JSON.parse(JSON.stringify(json));
 		jsonweek = JSON.parse(JSON.stringify(json));
+		//if(jsonmain.series[5].avg>jsonmain.series[1].avg) {$("p").text("é maior");}
+		//else {$("p").text("é menor");}
 		if (valweek == "todas") { //Se for todas as semanas
 			plotChart(jsonmain,'main');
 		} else { //Se for semana específica
@@ -192,35 +199,152 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 		$('#hidefilter option[value=show]').prop('selected', 'selected').change();	
 	});
 	
+	function getMinMaxAVG(vector,vetind){
+		var indmax = 0;
+		var indmin = 0;
+		var auxmax = vector[vetind[indmax]].avg;
+		var auxmin = vector[vetind[indmin]].avg;
+		for(var k=1;k<vetind.length;k++){
+			if(vector[vetind[k]].avg < auxmin) {auxmin = vector[vetind[k]].avg; indmin = k;}
+			if(vector[vetind[k]].avg > auxmax) {auxmax = vector[vetind[k]].avg; indmax = k;}
+		}
+		return [indmin,indmax];
+	}
+	
+	function getMinMaxY(vector,vetind){
+		var aux;
+		var indmax = 0;
+		var indmin = 0;
+		var auxmax = vector[vetind[indmax]].positive ? vector[vetind[indmax]].y : vector[vetind[indmax]].y*(-1);
+		var auxmin = vector[vetind[indmin]].positive ? vector[vetind[indmin]].y : vector[vetind[indmin]].y*(-1);
+		for(var k=1;k<vetind.length;k++){
+			if(vector[vetind[k]].positive){
+				if(vector[vetind[k]].y>auxmax) {auxmax = vector[vetind[k]].y; indmax = k;}
+				if(vector[vetind[k]].y<auxmin) {auxmin = vector[vetind[k]].y; indmin = k;}
+			} else {
+				aux = vector[vetind[k]].y*(-1);
+				if(aux>auxmax) {auxmax = aux; indmax = k;}
+				if(aux<auxmin) {auxmin = aux; indmin = k;}
+			}
+		}
+		return [indmin,indmax];
+	}
+	
+	function getTopBottom(array,t,weekvalor) {
+		var m = [0,1,2,3,4,5,6,7,8,9];
+		var indice;
+		var i = 0;
+		if(weekvalor == "todas" && t == "top"){
+			array.series.forEach(function(serie,index){
+				if(index>=10){
+					indice = getMinMaxAVG(array.series,m);
+					//for(i=10;(i < m.length) && (serie.y <= array.series[0].data[m[i]].y);i++){}
+					//if(i < m.length) m[i]=index;
+					if(serie.avg > array.series[m[indice[0]]].avg){m[indice[0]]=index;}
+				}
+			});
+		} else if(weekvalor == "todas" && t == "bottom") {
+			array.series.forEach(function(serie,index){
+				if(index>=10){
+					indice = getMinMaxAVG(array.series,m);
+					//for(i=10;(i < m.length) && (serie.y <= array.series[0].data[m[i]].y);i++){}
+					//if(i < m.length) m[i]=index;
+					if(serie.avg < array.series[m[indice[1]]].avg){m[indice[1]]=index;}
+				}
+			});
+		} else if(weekvalor != "todas" && t == "top") {
+			array.series[0].data.forEach(function(serie,index){
+				if(index>=10){
+					indice = getMinMaxY(array.series[0].data,m);
+					//for(i=10;(i < m.length) && (serie.y <= array.series[0].data[m[i]].y);i++){}
+					//if(i < m.length) m[i]=index;
+					var aux = serie.positive ? serie.y : serie.y*(-1);
+					var aux2 = array.series[0].data[m[indice[0]]].positive ? array.series[0].data[m[indice[0]]].y : array.series[0].data[m[indice[0]]].y*(-1);
+					if(aux > aux2){m[indice[0]]=index;}
+				}
+			});
+		} else {
+			array.series[0].data.forEach(function(serie,index){
+				if(index>=10){
+					indice = getMinMaxY(array.series[0].data,m);
+					//for(i=10;(i < m.length) && (serie.y <= array.series[0].data[m[i]].y);i++){}
+					//if(i < m.length) m[i]=index;
+					var aux = serie.positive ? serie.y : serie.y*(-1);
+					var aux2 = array.series[0].data[m[indice[1]]].positive ? array.series[0].data[m[indice[1]]].y : array.series[0].data[m[indice[1]]].y*(-1);
+					if(aux < aux2){m[indice[1]]=index;}
+				}
+			});
+		}
+		return m;
+	}
+	
 	$("#hidefilter").change(function() { //Executar função quando evento CHANGE no filtro de esconder ocorrer
-		var graph = $('#container').highcharts(); //Armazena o gráfico em uma variável 
-		if($("#weekfilter").val() == "todas"){
+		var graph = $('#container').highcharts(); //Armazena o gráfico em uma variável
+		var hidefilterval = $(this).val();
+		var weekfilterval = $("#weekfilter").val();
+		var ind = [];
+		if(weekfilterval == "todas"){
 			var series = graph.series[0];
-			if ($(this).val() == "hide") {
-				$(graph.series).each(function(){
-					this.setVisible(false, false);
-				});
-				graph.redraw();
-			} else if($(this).val() == "show"){
-				$(graph.series).each(function(){
-					this.setVisible(true, false);
-				});
-				graph.redraw();
+			switch(hidefilterval) {
+				case "hide":
+					$(graph.series).each(function(){
+						this.setVisible(false, false);
+					});
+				break;
+				case "show":
+					$(graph.series).each(function(){
+						this.setVisible(true, false);
+					});
+				break;
+				case "top10":
+					ind = getTopBottom(jsonmain,"top",weekfilterval);
+					$(graph.series).each(function(index,serie){
+						for(i=0;(i < ind.length) && (index != ind[i]);i++){}
+						if(i < ind.length) this.setVisible(true, false);
+						else this.setVisible(false, false);
+					});
+				break;
+				case "bottom10":
+					ind = getTopBottom(jsonmain,"bottom",weekfilterval);
+					$(graph.series).each(function(index,serie){
+						for(i=0;(i < ind.length) && (index != ind[i]);i++){}
+						if(i < ind.length) this.setVisible(true, false);
+						else this.setVisible(false, false);
+					});
+				break;
 			}
 		} else {
 			var series = graph.series[0].data;
-			if ($(this).val() == "hide") {
-				$(graph.series[0].data).each(function(){
-					this.setVisible(false, false);
-				});
-				graph.redraw();
-			} else if($(this).val() == "show"){
-				$(graph.series[0].data).each(function(){
-					this.setVisible(true, false);
-				});
-				graph.redraw();
+			switch(hidefilterval) {
+				case "hide":
+					$(graph.series[0].data).each(function(){
+						this.setVisible(false, false);
+					});
+				break;
+				case "show":
+					$(graph.series[0].data).each(function(){
+						this.setVisible(true, false);
+					});
+				break;
+				case "top10":
+					ind = getTopBottom(jsonweek,"top",weekfilterval);
+					$(graph.series[0].data).each(function(index,serie){
+						for(i=0;(i < ind.length) && (index != ind[i]);i++){}
+						if(i < ind.length) this.setVisible(true, false);
+						else this.setVisible(false, false);
+					});
+				break;
+				case "bottom10":
+					ind = getTopBottom(jsonweek,"bottom",weekfilterval);
+					$(graph.series[0].data).each(function(index,serie){
+						for(i=0;(i < ind.length) && (index != ind[i]);i++){}
+						if(i < ind.length) this.setVisible(true, false);
+						else this.setVisible(false, false);
+					});
+				break;
 			}
 		}
+		graph.redraw();
     });
 });
 </script>
