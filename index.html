@@ -95,7 +95,7 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 	function plotChart(dataplot,t) { //Função de plotar gráfico	
 		if(t=='main'){ //Se for todas as semanas
 			dataplot.series.forEach(function(serie,index){
-				if(serie.data[serie.data.length-1] == null){ //Verifica em cada série se o jogador está no clã (buscando valor Nulo no último índice do vetor Data)
+				while((index < dataplot.series.length) && (dataplot.series[index].data[serie.data.length-1] == null)){
 					dataplot.series.splice(index,1);
 				}
 			});	
