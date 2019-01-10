@@ -15,6 +15,8 @@
 			<h1>K.F.G.M<br> </h1>
 		</div>
 		<div align="center">
+			<select id="yearfilter">
+			</select>
 			<select id="hidefilter">
 				<option value="show">Mostrar Todos</option>
 				<option value="hide">Esconder Todos</option>
@@ -37,6 +39,7 @@
 $(document).ready(function() { //Executa a função ao disparar o evento de Documento Pronto
 	var valweek;
 	var firstweek = 20;
+	var jsonvector = [];
 	var json = {};
 	var jsonweek = {};
 	var jsonmain = {};
@@ -44,7 +47,8 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 	//Faz requisição de GET arquivo json na URL redirect
 	$.ajax({url: redirect, dataType: 'json', jsonpCallback: 'callback', type: 'GET', header:{}, success: function(result){
 		//Em caso de sucesso, executa essa função
-        json = JSON.parse(JSON.stringify(result)); //Técnica para clonar objeto
+        jsonvector = JSON.parse(JSON.stringify(result)); //Técnica para clonar objeto
+		firstweek = jsonvector[0].xAxis.categories[0];
 		var xAxistitle = {
 			text: 'Nº da semana de 2018'
 		};
@@ -77,19 +81,23 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
                 enableMouseTracking: true
             }
         };
-        json.chart = chart;
-        json.title = title;
-	    json.subtitle = subtitle;
-	    json.yAxis = yAxis;
-		json.xAxis.title = xAxistitle;
-        json.tooltip = tooltip;
-        json.legend = legend;
-        json.plotOptions = plotOptions;
-		json.xAxis.categories.forEach(function(item){
+		var d = new Date();
+		var ano = d.getFullYear();
+		for(var i=0;i<jsonvector.length;i++){
+        jsonvector[i].chart = chart;
+        jsonvector[i].title = title;
+	    jsonvector[i].subtitle = subtitle;
+	    jsonvector[i].yAxis = yAxis;
+		jsonvector[i].xAxis.title = xAxistitle;
+        jsonvector[i].tooltip = tooltip;
+        jsonvector[i].legend = legend;
+        jsonvector[i].plotOptions = plotOptions;
+		}
+		jsonvector.forEach(function(item,index){
 			//Acrescenta opção no filtro de semana para cada semana
-			$('#weekfilter').append('<option value="'+item+'">Semana '+item+'</option>');
+			$('#yearfilter').append('<option value="'+index+'">'+ano-index+'</option>');
 		});
-		$("#datafilter").trigger('change'); //Dispara o evento de CHANGE no filtro de dados
+		$("#yearfilter").trigger('change'); //Dispara o evento de CHANGE no filtro de dados
 	}});//fim do ajax
 		
 	function plotChart(dataplot,t) { //Função de plotar gráfico	
@@ -104,6 +112,20 @@ $(document).ready(function() { //Executa a função ao disparar o evento de Docu
 			Highcharts.chart('container',dataplot);
 		}	
 	}
+	
+	$("#yearfilter").change(function() { //Executar função quando evento CHANGE no filtro de anos ocorrer
+		json = JSON.parse(JSON.stringify(jsonvector[$(this).val()])); //Técnica para clonar objeto
+		var length = $('#weekfilter').options.length;
+		var i;
+		for(i = length - 1 ; i >= 0 ; i--){
+			$('#weekfilter').remove(i);
+		}	
+		json.xAxis.categories.forEach(function(item){
+			//Acrescenta opção no filtro de semana para cada semana
+			$('#weekfilter').append('<option value="'+item+'">Semana '+item+'</option>');
+		});
+		$("#datafilter").trigger('change'); //Dispara o evento de CHANGE no filtro de dados
+	});
 	
 	$("#datafilter").change(function() { //Executar função quando evento CHANGE no filtro de dados ocorrer
 		switch($(this).val()) { //Switch no valor da SELEÇÂO no filtro de dados para formatar o dado ativo (data) como uma das opções (data 1,2,3)
